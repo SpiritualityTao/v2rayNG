@@ -16,7 +16,7 @@ import com.v2ray.ang.R
 import com.v2ray.ang.dto.EConfigType
 import com.v2ray.ang.dto.ServerConfig
 import com.v2ray.ang.dto.V2rayConfig
-import com.v2ray.ang.extension.toast
+//import com.v2ray.ang.extension.toast
 import com.v2ray.ang.util.*
 import com.v2ray.ang.util.MmkvManager.KEY_ANG_CONFIGS
 import kotlinx.coroutines.*
@@ -93,7 +93,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         MmkvManager.clearAllTestDelayResults()
         updateListAction.value = -1 // update all
 
-        getApplication<AngApplication>().toast(R.string.connection_test_testing)
+//        getApplication<AngApplication>().toast(R.string.connection_test_testing)
         for (guid in serverList) {
             serversCache.getOrElse(guid) { MmkvManager.decodeServerConfig(guid) }?.getProxyOutbound()?.let { outbound ->
                 val serverAddress = outbound.getServerAddress()
@@ -131,11 +131,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     isRunning.value = false
                 }
                 AppConfig.MSG_STATE_START_SUCCESS -> {
-                    getApplication<AngApplication>().toast(R.string.toast_services_success)
+//                    getApplication<AngApplication>().toast(R.string.toast_services_success)
                     isRunning.value = true
                 }
                 AppConfig.MSG_STATE_START_FAILURE -> {
-                    getApplication<AngApplication>().toast(R.string.toast_services_failure)
+//                    getApplication<AngApplication>().toast(R.string.toast_services_failure)
                     isRunning.value = false
                 }
                 AppConfig.MSG_STATE_STOP_SUCCESS -> {

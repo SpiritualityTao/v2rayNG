@@ -17,10 +17,11 @@ import com.tencent.mmkv.MMKV
 import com.v2ray.ang.AppConfig
 import com.v2ray.ang.AppConfig.ANG_PACKAGE
 import com.v2ray.ang.AppConfig.TAG_DIRECT
+import com.v2ray.ang.AppConfig.TAG_KMRE_PROXY
 import com.v2ray.ang.R
 import com.v2ray.ang.dto.ServerConfig
 import com.v2ray.ang.extension.toSpeedString
-import com.v2ray.ang.extension.toast
+//import com.v2ray.ang.extension.toast
 import com.v2ray.ang.ui.MainActivity
 import com.v2ray.ang.util.MessageUtil
 import com.v2ray.ang.util.MmkvManager
@@ -45,8 +46,8 @@ object V2RayServiceManager {
     private const val NOTIFICATION_ICON_THRESHOLD = 3000
 
     val v2rayPoint: V2RayPoint = Libv2ray.newV2RayPoint(V2RayCallback())
-    private val mMsgReceive = ReceiveMessageHandler()
-    private val mainStorage by lazy { MMKV.mmkvWithID(MmkvManager.ID_MAIN, MMKV.MULTI_PROCESS_MODE) }
+//    private val mMsgReceive = ReceiveMessageHandler()
+    val mainStorage by lazy { MMKV.mmkvWithID(MmkvManager.ID_MAIN, MMKV.MULTI_PROCESS_MODE) }
     private val settingsStorage by lazy { MMKV.mmkvWithID(MmkvManager.ID_SETTING, MMKV.MULTI_PROCESS_MODE) }
 
     var serviceControl: SoftReference<ServiceControl>? = null
@@ -68,9 +69,9 @@ object V2RayServiceManager {
 
     fun startV2Ray(context: Context) {
         if (settingsStorage?.decodeBool(AppConfig.PREF_PROXY_SHARING) == true) {
-            context.toast(R.string.toast_warning_pref_proxysharing_short)
+//            context.toast(R.string.toast_warning_pref_proxysharing_short)
         }else{
-            context.toast(R.string.toast_services_start)
+//            context.toast(R.string.toast_services_start)
         }
         val intent = if (settingsStorage?.decodeString(AppConfig.PREF_MODE) ?: "VPN" == "VPN") {
             Intent(context.applicationContext, V2RayVpnService::class.java)
@@ -86,6 +87,7 @@ object V2RayServiceManager {
 
     private class V2RayCallback : V2RayVPNServiceSupportsSet {
         override fun shutdown(): Long {
+            Log.d(TAG_KMRE_PROXY, "[shutdown]")
             val serviceControl = serviceControl?.get() ?: return -1
             // called by go
             // shutdown the whole vpn service
@@ -137,15 +139,15 @@ object V2RayServiceManager {
             if (!result.status)
                 return
 
-            try {
-                val mFilter = IntentFilter(AppConfig.BROADCAST_ACTION_SERVICE)
-                mFilter.addAction(Intent.ACTION_SCREEN_ON)
-                mFilter.addAction(Intent.ACTION_SCREEN_OFF)
-                mFilter.addAction(Intent.ACTION_USER_PRESENT)
-                service.registerReceiver(mMsgReceive, mFilter)
-            } catch (e: Exception) {
-                Log.d(ANG_PACKAGE, e.toString())
-            }
+//            try {
+//                val mFilter = IntentFilter(AppConfig.BROADCAST_ACTION_SERVICE)
+//                mFilter.addAction(Intent.ACTION_SCREEN_ON)
+//                mFilter.addAction(Intent.ACTION_SCREEN_OFF)
+//                mFilter.addAction(Intent.ACTION_USER_PRESENT)
+//                service.registerReceiver(mMsgReceive, mFilter)
+//            } catch (e: Exception) {
+//                Log.d(ANG_PACKAGE, e.toString())
+//            }
 
             v2rayPoint.configureFileContent = result.content
             v2rayPoint.domainName = config.getV2rayPointDomainAndPort()
@@ -153,7 +155,6 @@ object V2RayServiceManager {
             v2rayPoint.enableLocalDNS = settingsStorage?.decodeBool(AppConfig.PREF_LOCAL_DNS_ENABLED) ?: false
             v2rayPoint.forwardIpv6 = settingsStorage?.decodeBool(AppConfig.PREF_FORWARD_IPV6) ?: false
             v2rayPoint.proxyOnly = settingsStorage?.decodeString(AppConfig.PREF_MODE) ?: "VPN" != "VPN"
-
             try {
                 v2rayPoint.runLoop()
             } catch (e: Exception) {
@@ -186,51 +187,51 @@ object V2RayServiceManager {
         MessageUtil.sendMsg2UI(service, AppConfig.MSG_STATE_STOP_SUCCESS, "")
         cancelNotification()
 
-        try {
-            service.unregisterReceiver(mMsgReceive)
-        } catch (e: Exception) {
-            Log.d(ANG_PACKAGE, e.toString())
-        }
+//        try {
+//            service.unregisterReceiver(mMsgReceive)
+//        } catch (e: Exception) {
+//            Log.d(ANG_PACKAGE, e.toString())
+//        }
     }
 
-    private class ReceiveMessageHandler : BroadcastReceiver() {
-        override fun onReceive(ctx: Context?, intent: Intent?) {
-            val serviceControl = serviceControl?.get() ?: return
-            when (intent?.getIntExtra("key", 0)) {
-                AppConfig.MSG_REGISTER_CLIENT -> {
-                    //Logger.e("ReceiveMessageHandler", intent?.getIntExtra("key", 0).toString())
-                    if (v2rayPoint.isRunning) {
-                        MessageUtil.sendMsg2UI(serviceControl.getService(), AppConfig.MSG_STATE_RUNNING, "")
-                    } else {
-                        MessageUtil.sendMsg2UI(serviceControl.getService(), AppConfig.MSG_STATE_NOT_RUNNING, "")
-                    }
-                }
-                AppConfig.MSG_UNREGISTER_CLIENT -> {
-                    // nothing to do
-                }
-                AppConfig.MSG_STATE_START -> {
-                    // nothing to do
-                }
-                AppConfig.MSG_STATE_STOP -> {
-                    serviceControl.stopService()
-                }
-                AppConfig.MSG_STATE_RESTART -> {
-                    startV2rayPoint()
-                }
-            }
-
-            when (intent?.action) {
-                Intent.ACTION_SCREEN_OFF -> {
-                    Log.d(ANG_PACKAGE, "SCREEN_OFF, stop querying stats")
-                    stopSpeedNotification()
-                }
-                Intent.ACTION_SCREEN_ON -> {
-                    Log.d(ANG_PACKAGE, "SCREEN_ON, start querying stats")
-                    startSpeedNotification()
-                }
-            }
-        }
-    }
+//    private class ReceiveMessageHandler : BroadcastReceiver() {
+//        override fun onReceive(ctx: Context?, intent: Intent?) {
+//            val serviceControl = serviceControl?.get() ?: return
+//            when (intent?.getIntExtra("key", 0)) {
+//                AppConfig.MSG_REGISTER_CLIENT -> {
+//                    //Logger.e("ReceiveMessageHandler", intent?.getIntExtra("key", 0).toString())
+//                    if (v2rayPoint.isRunning) {
+//                        MessageUtil.sendMsg2UI(serviceControl.getService(), AppConfig.MSG_STATE_RUNNING, "")
+//                    } else {
+//                        MessageUtil.sendMsg2UI(serviceControl.getService(), AppConfig.MSG_STATE_NOT_RUNNING, "")
+//                    }
+//                }
+//                AppConfig.MSG_UNREGISTER_CLIENT -> {
+//                    // nothing to do
+//                }
+//                AppConfig.MSG_STATE_START -> {
+//                    // nothing to do
+//                }
+//                AppConfig.MSG_STATE_STOP -> {
+//                    serviceControl.stopService()
+//                }
+//                AppConfig.MSG_STATE_RESTART -> {
+//                    startV2rayPoint()
+//                }
+//            }
+//
+//            when (intent?.action) {
+//                Intent.ACTION_SCREEN_OFF -> {
+//                    Log.d(ANG_PACKAGE, "SCREEN_OFF, stop querying stats")
+//                    stopSpeedNotification()
+//                }
+//                Intent.ACTION_SCREEN_ON -> {
+//                    Log.d(ANG_PACKAGE, "SCREEN_ON, start querying stats")
+//                    startSpeedNotification()
+//                }
+//            }
+//        }
+//    }
 
     private fun showNotification() {
         val service = serviceControl?.get()?.getService() ?: return
@@ -381,5 +382,18 @@ object V2RayServiceManager {
             mSubscription = null
             updateNotification(currentConfig?.remarks, 0, 0)
         }
+    }
+
+    var mIsOpen = false;
+    fun isRunning(): Boolean {
+        return v2rayPoint.isRunning;
+    }
+
+    fun setKmreProxyisOpen(isOpen : Boolean) {
+        mIsOpen = isOpen
+    }
+
+    fun isOpenForKmreProxy(): Boolean {
+        return mIsOpen
     }
 }

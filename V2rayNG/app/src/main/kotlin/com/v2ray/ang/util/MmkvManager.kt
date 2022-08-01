@@ -69,6 +69,14 @@ object MmkvManager {
         serverAffStorage?.remove(guid)
     }
 
+    fun clearAllServer() {
+        mainStorage.clear()
+        val serverList= decodeServerList()
+        serverList.clear()
+        serverStorage.clear()
+        serverAffStorage.clear()
+    }
+
     fun removeServerViaSubid(subid: String) {
         if (subid.isBlank()) {
             return

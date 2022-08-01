@@ -14,7 +14,7 @@ import com.tbruyelle.rxpermissions.RxPermissions
 import com.v2ray.ang.AppConfig
 import com.v2ray.ang.R
 import com.v2ray.ang.databinding.FragmentRoutingSettingsBinding
-import com.v2ray.ang.extension.toast
+//import com.v2ray.ang.extension.toast
 import com.v2ray.ang.extension.v2RayApplication
 import com.v2ray.ang.util.Utils
 import kotlinx.coroutines.Dispatchers
@@ -63,7 +63,7 @@ class RoutingSettingsFragment : Fragment() {
         R.id.save_routing -> {
             val content = binding.etRoutingContent.text.toString()
             defaultSharedPreferences.edit().putString(requireArguments().getString(routing_arg), content).apply()
-            activity?.toast(R.string.toast_success)
+//            activity?.toast(R.string.toast_success)
             true
         }
         R.id.del_routing -> {
@@ -88,7 +88,7 @@ class RoutingSettingsFragment : Fragment() {
     private fun saveRouting() {
         val content = binding.etRoutingContent.text.toString()
         defaultSharedPreferences.edit().putString(requireArguments().getString(routing_arg), content).apply()
-        activity?.toast(R.string.toast_success)
+//        activity?.toast(R.string.toast_success)
     }
 
     fun scanQRcode(forReplace: Boolean): Boolean {
@@ -105,8 +105,8 @@ class RoutingSettingsFragment : Fragment() {
                             scanQRCodeForReplace.launch(Intent(activity, ScannerActivity::class.java))
                         else
                             scanQRCodeForAppend.launch(Intent(activity, ScannerActivity::class.java))
-                    else
-                        activity?.toast(R.string.toast_permission_denied)
+//                    else
+//                        activity?.toast(R.string.toast_permission_denied)
                 }
 //        }
         return true
@@ -140,7 +140,7 @@ class RoutingSettingsFragment : Fragment() {
             }
         }
 
-        activity?.toast(R.string.msg_downloading_content)
+//        activity?.toast(R.string.msg_downloading_content)
         GlobalScope.launch(Dispatchers.IO) {
             val content = try {
                 URL(url).readText()

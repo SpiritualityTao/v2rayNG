@@ -13,7 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.google.zxing.BarcodeFormat
 import com.tbruyelle.rxpermissions.RxPermissions
 import com.v2ray.ang.R
-import com.v2ray.ang.extension.toast
+//import com.v2ray.ang.extension.toast
 import com.v2ray.ang.util.QRCodeDecoder
 
 class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
@@ -79,8 +79,8 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
-                        } else
-                            toast(R.string.toast_permission_denied)
+                        }
+//                            toast(R.string.toast_permission_denied)
                     }
             true
         }
@@ -96,7 +96,7 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
         try {
             chooseFile.launch(Intent.createChooser(intent, getString(R.string.title_file_chooser)))
         } catch (ex: android.content.ActivityNotFoundException) {
-            toast(R.string.toast_require_file_manager)
+//            toast(R.string.toast_require_file_manager)
         }
     }
 
@@ -109,7 +109,7 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
                 finished(text)
             } catch (e: Exception) {
                 e.printStackTrace()
-                toast(e.message.toString())
+//                toast(e.message.toString())
             }
         }
     }

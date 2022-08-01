@@ -3,6 +3,7 @@ package com.v2ray.ang.ui
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import android.text.TextUtils
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,7 +15,7 @@ import com.v2ray.ang.dto.ServerConfig
 import com.v2ray.ang.dto.V2rayConfig
 import com.v2ray.ang.dto.V2rayConfig.Companion.DEFAULT_PORT
 import com.v2ray.ang.dto.V2rayConfig.Companion.XTLS
-import com.v2ray.ang.extension.toast
+//import com.v2ray.ang.extension.toast
 import com.v2ray.ang.util.MmkvManager
 import com.v2ray.ang.util.MmkvManager.ID_MAIN
 import com.v2ray.ang.util.MmkvManager.KEY_SELECTED_SERVER
@@ -193,21 +194,21 @@ class ServerActivity : BaseActivity() {
      */
     private fun saveServer(): Boolean {
         if (TextUtils.isEmpty(et_remarks.text.toString())) {
-            toast(R.string.server_lab_remarks)
+//            toast(R.string.server_lab_remarks)
             return false
         }
         if (TextUtils.isEmpty(et_address.text.toString())) {
-            toast(R.string.server_lab_address)
+//            toast(R.string.server_lab_address)
             return false
         }
         val port = Utils.parseInt(et_port.text.toString())
         if (port <= 0) {
-            toast(R.string.server_lab_port)
+//            toast(R.string.server_lab_port)
             return false
         }
         val config = MmkvManager.decodeServerConfig(editGuid) ?: ServerConfig.create(createConfigType)
         if (config.configType != EConfigType.SOCKS && TextUtils.isEmpty(et_id.text.toString())) {
-            toast(R.string.server_lab_id)
+//            toast(R.string.server_lab_id)
             return false
         }
 
@@ -223,7 +224,7 @@ class ServerActivity : BaseActivity() {
         }
 
         MmkvManager.encodeServerConfig(editGuid, config)
-        toast(R.string.toast_success)
+//        toast(R.string.toast_success)
         finish()
         return true
     }
@@ -235,6 +236,7 @@ class ServerActivity : BaseActivity() {
         if (config.configType == EConfigType.VMESS) {
             vnext.users[0].security = securitys[sp_security?.selectedItemPosition ?: 0]
         } else if (config.configType == EConfigType.VLESS) {
+
             vnext.users[0].encryption = et_security?.text.toString().trim()
             if (streamSecuritys[sp_stream_security?.selectedItemPosition ?: 0] == XTLS) {
 //                vnext.users[0].flow = flows[sp_flow.selectedItemPosition].ifBlank { V2rayConfig.DEFAULT_FLOW }

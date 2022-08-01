@@ -10,7 +10,7 @@ import com.tencent.mmkv.MMKV
 import com.v2ray.ang.R
 import com.v2ray.ang.databinding.ActivitySubEditBinding
 import com.v2ray.ang.dto.SubscriptionItem
-import com.v2ray.ang.extension.toast
+//import com.v2ray.ang.extension.toast
 import com.v2ray.ang.util.MmkvManager
 import com.v2ray.ang.util.Utils
 
@@ -77,16 +77,16 @@ class SubEditActivity : BaseActivity() {
         subItem.url = binding.etUrl.text.toString()
 
         if (TextUtils.isEmpty(subItem.remarks)) {
-            toast(R.string.sub_setting_remarks)
+//            toast(R.string.sub_setting_remarks)
             return false
         }
         if (TextUtils.isEmpty(subItem.url)) {
-            toast(R.string.sub_setting_url)
+//            toast(R.string.sub_setting_url)
             return false
         }
 
         subStorage?.encode(subId, Gson().toJson(subItem))
-        toast(R.string.toast_success)
+//        toast(R.string.toast_success)
         finish()
         return true
     }

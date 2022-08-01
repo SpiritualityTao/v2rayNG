@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion Integer.parseInt("$compileSdkVer")
-    buildToolsVersion buildToolsVer
+    buildToolsVersion '30.0.3'
 
     compileOptions {
         targetCompatibility = "8"
@@ -19,19 +19,30 @@ android {
         versionName "1.0.2"
     }
 
+    signingConfigs {
+        release {
+            File strFile = new File("../v2rayNG.jks")
+            storeFile file(strFile)
+            storePassword "qwer1234"
+            keyPassword "qwer1234"
+            keyAlias "key0"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             zipAlignEnabled false
             shrinkResources false
-            ndk.abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+            ndk.abiFilters 'x86_64', 'arm64-v8a'
+            signingConfig signingConfigs.release
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
             minifyEnabled false
             zipAlignEnabled false
             shrinkResources false
-            ndk.abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+            ndk.abiFilters 'x86_64', 'arm64-v8a'
         }
     }
 
@@ -114,7 +125,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://maven.google.com' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://jitpack.io' }
         jcenter()
     }

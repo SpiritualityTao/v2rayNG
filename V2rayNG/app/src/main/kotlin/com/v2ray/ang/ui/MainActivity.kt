@@ -26,7 +26,7 @@ import com.v2ray.ang.BuildConfig
 import com.v2ray.ang.R
 import com.v2ray.ang.databinding.ActivityMainBinding
 import com.v2ray.ang.dto.EConfigType
-import com.v2ray.ang.extension.toast
+//import com.v2ray.ang.extension.toast
 import com.v2ray.ang.helper.SimpleItemTouchHelperCallback
 import com.v2ray.ang.service.V2RayServiceManager
 import com.v2ray.ang.util.AngConfigManager
@@ -68,6 +68,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             if (mainViewModel.isRunning.value == true) {
                 Utils.stopVService(this)
             } else if (settingsStorage?.decodeString(AppConfig.PREF_MODE) ?: "VPN" == "VPN") {
+
                 val intent = VpnService.prepare(this)
                 if (intent == null) {
                     startV2Ray()
@@ -140,10 +141,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             if (result != null) {
                 launch(Dispatchers.Main) {
                     if (result) {
-                        toast(getString(R.string.migration_success))
+//                        toast(getString(R.string.migration_success))
                         mainViewModel.reloadServerList()
                     } else {
-                        toast(getString(R.string.migration_fail))
+//                        toast(getString(R.string.migration_fail))
                     }
                 }
             }
@@ -227,9 +228,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         R.id.export_all -> {
             if (AngConfigManager.shareNonCustomConfigsToClipboard(this, mainViewModel.serverList) == 0) {
-                toast(R.string.toast_success)
+//                toast(R.string.toast_success)
             } else {
-                toast(R.string.toast_failure)
+//                toast(R.string.toast_failure)
             }
             true
         }
@@ -268,8 +269,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                             scanQRCodeForConfig.launch(Intent(this, ScannerActivity::class.java))
                         else
                             scanQRCodeForUrlToCustomConfig.launch(Intent(this, ScannerActivity::class.java))
-                    else
-                        toast(R.string.toast_permission_denied)
+//                    else
+//                        toast(R.string.toast_permission_denied)
                 }
 //        }
         return true
@@ -308,10 +309,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             count = AngConfigManager.importBatchConfig(Utils.decode(server!!), subid)
         }
         if (count > 0) {
-            toast(R.string.toast_success)
+//            toast(R.string.toast_success)
             mainViewModel.reloadServerList()
         } else {
-            toast(R.string.toast_failure)
+//            toast(R.string.toast_failure)
         }
     }
 
@@ -320,7 +321,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         try {
             val configText = Utils.getClipboard(this)
             if (TextUtils.isEmpty(configText)) {
-                toast(R.string.toast_none_data_clipboard)
+//                toast(R.string.toast_none_data_clipboard)
                 return false
             }
             importCustomizeConfig(configText)
@@ -349,7 +350,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         try {
             val url = Utils.getClipboard(this)
             if (TextUtils.isEmpty(url)) {
-                toast(R.string.toast_none_data_clipboard)
+//                toast(R.string.toast_none_data_clipboard)
                 return false
             }
             return importConfigCustomUrl(url)
@@ -365,7 +366,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     fun importConfigCustomUrl(url: String?): Boolean {
         try {
             if (!Utils.isValidUrl(url)) {
-                toast(R.string.toast_invalid_url)
+//                toast(R.string.toast_invalid_url)
                 return false
             }
             GlobalScope.launch(Dispatchers.IO) {
@@ -392,7 +393,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     fun importConfigViaSub()
             : Boolean {
         try {
-            toast(R.string.title_sub_update)
+//            toast(R.string.title_sub_update)
             MmkvManager.decodeSubscriptions().forEach {
                 if (TextUtils.isEmpty(it.first)
                         || TextUtils.isEmpty(it.second.remarks)
@@ -411,7 +412,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                     } catch (e: Exception) {
                         e.printStackTrace()
                         launch(Dispatchers.Main) {
-                            toast("\"" + it.second.remarks + "\" " + getString(R.string.toast_failure))
+//                            toast("\"" + it.second.remarks + "\" " + getString(R.string.toast_failure))
                         }
                         return@launch
                     }
@@ -438,7 +439,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         try {
             chooseFileForCustomConfig.launch(Intent.createChooser(intent, getString(R.string.title_file_chooser)))
         } catch (ex: android.content.ActivityNotFoundException) {
-            toast(R.string.toast_require_file_manager)
+//            toast(R.string.toast_require_file_manager)
         }
     }
 
@@ -464,8 +465,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
-                    } else
-                        toast(R.string.toast_permission_denied)
+                    }
+//                        toast(R.string.toast_permission_denied)
                 }
     }
 
@@ -475,14 +476,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     fun importCustomizeConfig(server: String?) {
         try {
             if (server == null || TextUtils.isEmpty(server)) {
-                toast(R.string.toast_none_data)
+//                toast(R.string.toast_none_data)
                 return
             }
             mainViewModel.appendCustomConfigServer(server)
-            toast(R.string.toast_success)
+//            toast(R.string.toast_success)
             adapter.notifyItemInserted(mainViewModel.serverList.lastIndex)
         } catch (e: Exception) {
-            ToastCompat.makeText(this, "${getString(R.string.toast_malformed_josn)} ${e.cause?.message}", Toast.LENGTH_LONG).show()
+//            ToastCompat.makeText(this, "${getString(R.string.toast_malformed_josn)} ${e.cause?.message}", Toast.LENGTH_LONG).show()
             e.printStackTrace()
             return
         }

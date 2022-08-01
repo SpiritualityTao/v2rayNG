@@ -14,10 +14,10 @@ import com.v2ray.ang.databinding.ActivityServerCustomConfigBinding
 import com.v2ray.ang.dto.EConfigType
 import com.v2ray.ang.dto.ServerConfig
 import com.v2ray.ang.dto.V2rayConfig
-import com.v2ray.ang.extension.toast
+//import com.v2ray.ang.extension.toast
 import com.v2ray.ang.util.MmkvManager
 import com.v2ray.ang.util.Utils
-import me.drakeet.support.toast.ToastCompat
+//import me.drakeet.support.toast.ToastCompat
 
 class ServerCustomConfigActivity : BaseActivity() {
     private lateinit var binding: ActivityServerCustomConfigBinding
@@ -75,7 +75,7 @@ class ServerCustomConfigActivity : BaseActivity() {
      */
     private fun saveServer(): Boolean {
         if (TextUtils.isEmpty(binding.etRemarks.text.toString())) {
-            toast(R.string.server_lab_remarks)
+//            toast(R.string.server_lab_remarks)
             return false
         }
 
@@ -83,7 +83,7 @@ class ServerCustomConfigActivity : BaseActivity() {
             Gson().fromJson(binding.editor.text.toString(), V2rayConfig::class.java)
         } catch (e: Exception) {
             e.printStackTrace()
-            ToastCompat.makeText(this, "${getString(R.string.toast_malformed_josn)} ${e.cause?.message}", Toast.LENGTH_LONG).show()
+//            ToastCompat.makeText(this, "${getString(R.string.toast_malformed_josn)} ${e.cause?.message}", Toast.LENGTH_LONG).show()
             return false
         }
 
@@ -93,7 +93,7 @@ class ServerCustomConfigActivity : BaseActivity() {
 
         MmkvManager.encodeServerConfig(editGuid, config)
         serverRawStorage?.encode(editGuid, binding.editor.text.toString())
-        toast(R.string.toast_success)
+//        toast(R.string.toast_success)
         finish()
         return true
     }

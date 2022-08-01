@@ -27,7 +27,6 @@
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
-
     <application
         android:name=".AngApplication"
         android:allowBackup="true"
@@ -42,10 +41,6 @@
             android:name=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -161,6 +156,16 @@
                 android:process=":RunSoLibV2RayDaemon">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:exported="true"
+            android:name=".receiver.KmreProxyReceiver"
+            android:process=":RunSoLibV2RayDaemon">
+            <intent-filter>
+                <action android:name="cn.kylinos.kmre.action.OPEN_KMRE_PROXY" />
+                <action android:name="cn.kylinos.kmre.action.CLOSE_KMRE_PROXY" />
             </intent-filter>
         </receiver>
         <!-- =====================Tasker===================== -->

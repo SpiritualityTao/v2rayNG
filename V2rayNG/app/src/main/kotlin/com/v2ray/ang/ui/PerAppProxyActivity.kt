@@ -27,7 +27,7 @@ import com.v2ray.ang.AppConfig
 import com.v2ray.ang.AppConfig.ANG_PACKAGE
 import com.v2ray.ang.databinding.ActivityBypassListBinding
 import com.v2ray.ang.dto.AppInfo
-import com.v2ray.ang.extension.toast
+//import com.v2ray.ang.extension.toast
 import com.v2ray.ang.extension.v2RayApplication
 import com.v2ray.ang.util.Utils
 import kotlinx.coroutines.Dispatchers
@@ -220,7 +220,7 @@ class PerAppProxyActivity : BaseActivity() {
     }
 
     private fun selectProxyApp() {
-        toast(R.string.msg_downloading_content)
+//        toast(R.string.msg_downloading_content)
         val url = AppConfig.androidpackagenamelistUrl
         GlobalScope.launch(Dispatchers.IO) {
             val content = try {
@@ -232,7 +232,7 @@ class PerAppProxyActivity : BaseActivity() {
             launch(Dispatchers.Main) {
                 Log.d(ANG_PACKAGE, content)
                 selectProxyApp(content)
-                toast(R.string.toast_success)
+//                toast(R.string.toast_success)
             }
         }
     }

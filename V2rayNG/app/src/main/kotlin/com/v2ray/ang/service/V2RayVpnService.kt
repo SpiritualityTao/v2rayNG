@@ -13,6 +13,7 @@ import android.util.Log
 import com.tencent.mmkv.MMKV
 import com.v2ray.ang.AppConfig
 import com.v2ray.ang.R
+import com.v2ray.ang.receiver.KmreProxyReceiver
 import com.v2ray.ang.util.MmkvManager
 import com.v2ray.ang.util.Utils
 import kotlinx.coroutines.Dispatchers
@@ -69,22 +70,12 @@ class V2RayVpnService : VpnService(), ServiceControl {
         V2RayServiceManager.serviceControl = SoftReference(this)
     }
 
-    override fun onRevoke() {
-        stopV2Ray()
-    }
-
-    override fun onLowMemory() {
-        stopV2Ray()
-        super.onLowMemory()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         stopV2Ray()
     }
 
     private fun setup(parameters: String) {
-
         val prepare = prepare(this)
         if (prepare != null) {
             return
@@ -129,7 +120,6 @@ class V2RayVpnService : VpnService(), ServiceControl {
                         }
                     }
         }
-
         builder.setSession(V2RayServiceManager.currentConfig?.remarks.orEmpty())
 
         if (settingsStorage?.decodeBool(AppConfig.PREF_PER_APP_PROXY) == true) {
@@ -237,6 +227,15 @@ class V2RayVpnService : VpnService(), ServiceControl {
             }
 
         }
+
+        if (V2RayServiceManager.isOpenForKmreProxy()) {
+            reconnectV2ray()
+        }
+    }
+
+    private fun reconnectV2ray() {
+        VpnService.prepare(this)
+        V2RayServiceManager.startV2Ray(this)
     }
 
     override fun getService(): Service {

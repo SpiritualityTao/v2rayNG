@@ -7,7 +7,7 @@ import com.v2ray.ang.R
 import com.v2ray.ang.util.AngConfigManager
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
-import com.v2ray.ang.extension.toast
+//import com.v2ray.ang.extension.toast
 
 class ScScannerActivity : BaseActivity() {
 
@@ -23,9 +23,9 @@ class ScScannerActivity : BaseActivity() {
                 .subscribe {
                     if (it)
                         scanQRCode.launch(Intent(this, ScannerActivity::class.java))
-                    else
-                        toast(R.string.toast_permission_denied)
                 }
+//                    else
+//                        toast(R.string.toast_permission_denied)
 
         return true
     }
@@ -34,9 +34,9 @@ class ScScannerActivity : BaseActivity() {
         if (it.resultCode == RESULT_OK) {
             val count = AngConfigManager.importBatchConfig(it.data?.getStringExtra("SCAN_RESULT"), "")
             if (count > 0) {
-                toast(R.string.toast_success)
+//                toast(R.string.toast_success)
             } else {
-                toast(R.string.toast_failure)
+//                toast(R.string.toast_failure)
             }
             startActivity(Intent(this, MainActivity::class.java))
         }

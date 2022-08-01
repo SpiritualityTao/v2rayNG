@@ -17,7 +17,7 @@ import com.v2ray.ang.databinding.ItemRecyclerFooterBinding
 import com.v2ray.ang.databinding.ItemRecyclerMainBinding
 import com.v2ray.ang.dto.EConfigType
 import com.v2ray.ang.dto.SubscriptionItem
-import com.v2ray.ang.extension.toast
+//import com.v2ray.ang.extension.toast
 import com.v2ray.ang.helper.ItemTouchHelperAdapter
 import com.v2ray.ang.helper.ItemTouchHelperViewHolder
 import com.v2ray.ang.service.V2RayServiceManager
@@ -98,13 +98,13 @@ class MainRecyclerAdapter(val activity: MainActivity) : RecyclerView.Adapter<Mai
                             }
                             1 -> {
                                 if (AngConfigManager.share2Clipboard(mActivity, guid) == 0) {
-                                    mActivity.toast(R.string.toast_success)
+//                                    mActivity.toast(R.string.toast_success)
                                 } else {
-                                    mActivity.toast(R.string.toast_failure)
+//                                    mActivity.toast(R.string.toast_failure)
                                 }
                             }
                             2 -> shareFullContent(guid)
-                            else -> mActivity.toast("else")
+//                            else -> mActivity.toast("else")
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -162,9 +162,9 @@ class MainRecyclerAdapter(val activity: MainActivity) : RecyclerView.Adapter<Mai
 
     private fun shareFullContent(guid: String) {
         if (AngConfigManager.shareFullContent2Clipboard(mActivity, guid) == 0) {
-            mActivity.toast(R.string.toast_success)
+//            mActivity.toast(R.string.toast_success)
         } else {
-            mActivity.toast(R.string.toast_failure)
+//            mActivity.toast(R.string.toast_failure)
         }
     }
 

@@ -10,7 +10,7 @@ import android.view.View
 import com.v2ray.ang.AppConfig.ANG_PACKAGE
 import com.v2ray.ang.R
 import com.v2ray.ang.databinding.ActivityLogcatBinding
-import com.v2ray.ang.extension.toast
+//import com.v2ray.ang.extension.toast
 import com.v2ray.ang.util.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -78,7 +78,7 @@ class LogcatActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.copy_all -> {
             Utils.setClipboard(this, binding.tvLogcat.text.toString())
-            toast(R.string.toast_success)
+//            toast(R.string.toast_success)
             true
         }
         R.id.delete -> {

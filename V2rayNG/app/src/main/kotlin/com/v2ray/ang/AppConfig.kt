@@ -56,6 +56,12 @@ object AppConfig {
     const val TASKER_EXTRA_BUNDLE_GUID = "tasker_extra_bundle_guid"
     const val TASKER_DEFAULT_GUID = "Default"
 
+    const val TAG_KMRE_PROXY = "kmre-proxy"
+    const val KMRE_EXTRA_BUNDLE = "cn.kylinos.kmre.intent.extra.BUNDLE"
+    const val KMRE_HOST = "kmre_host"
+    const val KMRE_PORT = "kmre_port"
+    const val KMRE_PROXY_TYPE = "kmre_porxy_type"
+
     const val TAG_AGENT = "proxy"
     const val TAG_DIRECT = "direct"
     const val TAG_BLOCKED = "block"

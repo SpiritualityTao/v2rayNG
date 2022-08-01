@@ -4,6 +4,8 @@ import com.v2ray.ang.AppConfig.TAG_AGENT
 import com.v2ray.ang.AppConfig.TAG_BLOCKED
 import com.v2ray.ang.AppConfig.TAG_DIRECT
 import com.v2ray.ang.util.Utils
+import android.util.Log
+import com.v2ray.ang.AppConfig
 
 data class ServerConfig(
         val configVersion: Int = 3,
@@ -60,6 +62,7 @@ data class ServerConfig(
     fun getV2rayPointDomainAndPort(): String {
         val address = getProxyOutbound()?.getServerAddress().orEmpty()
         val port = getProxyOutbound()?.getServerPort()
+        Log.d(AppConfig.ANG_PACKAGE, "address:" + address + ",port:" + port)
         return if (Utils.isIpv6Address(address)) {
             String.format("[%s]:%s", address, port)
         } else {
