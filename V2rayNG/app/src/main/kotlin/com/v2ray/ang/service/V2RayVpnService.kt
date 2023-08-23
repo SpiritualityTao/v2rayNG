@@ -10,6 +10,7 @@ import android.os.ParcelFileDescriptor
 import android.os.StrictMode
 import androidx.annotation.RequiresApi
 import android.util.Log
+import androidx.preference.PreferenceManager
 import com.tencent.mmkv.MMKV
 import com.v2ray.ang.AppConfig
 import com.v2ray.ang.R
@@ -125,6 +126,7 @@ class V2RayVpnService : VpnService(), ServiceControl {
         if (settingsStorage?.decodeBool(AppConfig.PREF_PER_APP_PROXY) == true) {
             val apps = settingsStorage?.decodeStringSet(AppConfig.PREF_PER_APP_PROXY_SET)
             val bypassApps = settingsStorage?.decodeBool(AppConfig.PREF_BYPASS_APPS) ?: false
+            Log.d(packageName, "apps:" + apps + ",bypassApps:" + bypassApps)
             apps?.forEach {
                 try {
                     if (bypassApps)

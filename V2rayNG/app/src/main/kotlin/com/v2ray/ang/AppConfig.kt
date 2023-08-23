@@ -61,6 +61,8 @@ object AppConfig {
     const val KMRE_HOST = "kmre_host"
     const val KMRE_PORT = "kmre_port"
     const val KMRE_PROXY_TYPE = "kmre_porxy_type"
+    const val KMRE_PER_APP_PROXY_ENABLE = "kmre_per_app_proxy_enable"
+    const val KMRE_PER_APP_PROXY = "kmre_per_app_proxy"
 
     const val TAG_AGENT = "proxy"
     const val TAG_DIRECT = "direct"

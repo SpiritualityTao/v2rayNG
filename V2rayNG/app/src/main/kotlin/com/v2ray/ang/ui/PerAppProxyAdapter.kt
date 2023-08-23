@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.util.Log
+import com.v2ray.ang.AppConfig
 import com.v2ray.ang.R
 import com.v2ray.ang.databinding.ItemRecyclerBypassListBinding
 import com.v2ray.ang.dto.AppInfo
@@ -76,6 +78,7 @@ class PerAppProxyAdapter(val activity: BaseActivity, val apps: List<AppInfo>, bl
         }
 
         override fun onClick(v: View?) {
+            Log.d(AppConfig.ANG_PACKAGE, "inBlacklist:" + inBlacklist + ",packageName:" + appInfo.packageName)
             if (inBlacklist) {
                 blacklist.remove(appInfo.packageName)
                 itemBypassBinding.checkBox.isChecked = false

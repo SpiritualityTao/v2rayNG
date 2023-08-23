@@ -54,6 +54,7 @@ class PerAppProxyActivity : BaseActivity() {
         binding.recyclerView.addItemDecoration(dividerItemDecoration)
 
         val blacklist = defaultSharedPreferences.getStringSet(AppConfig.PREF_PER_APP_PROXY_SET, null)
+        Log.d(ANG_PACKAGE, "PerAppProxyActivity  blacklist:" + blacklist)
 
         AppManagerUtil.rxLoadNetworkAppList(this)
                 .subscribeOn(Schedulers.io())
@@ -144,6 +145,7 @@ class PerAppProxyActivity : BaseActivity() {
 
         binding.switchPerAppProxy.setOnCheckedChangeListener { _, isChecked ->
             defaultSharedPreferences.edit().putBoolean(AppConfig.PREF_PER_APP_PROXY, isChecked).apply()
+            Log.d(AppConfig.TAG_KMRE_PROXY, "isChecked:" + isChecked)
         }
         binding.switchPerAppProxy.isChecked = defaultSharedPreferences.getBoolean(AppConfig.PREF_PER_APP_PROXY, false)
 
@@ -247,7 +249,7 @@ class PerAppProxyActivity : BaseActivity() {
             if (TextUtils.isEmpty(proxyApps)) {
                 return false
             }
-
+            Log.d(ANG_PACKAGE, "selectProxyApp  proxyApps:" + proxyApps)
             adapter?.blacklist!!.clear()
 
             if (binding.switchBypassApps.isChecked) {
