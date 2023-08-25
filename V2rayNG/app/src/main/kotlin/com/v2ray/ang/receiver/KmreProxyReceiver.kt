@@ -21,9 +21,6 @@ import com.v2ray.ang.util.Utils
 class KmreProxyReceiver : BroadcastReceiver() {
 
 
-    var mHost : String? = "192.168.1.101"
-    var mPort : Int? = 1080
-
     val ACTION_OPEN_KMRE_PROXY = "cn.kylinos.kmre.action.OPEN_KMRE_PROXY"
     val ACTION_CLOSE_KMRE_PROXY = "cn.kylinos.kmre.action.CLOSE_KMRE_PROXY"
     val ACTION_PER_APP_PROXY_SET = "cn.kylinos.kmre.action.PER_APP_PROXY_SET"
@@ -39,11 +36,17 @@ class KmreProxyReceiver : BroadcastReceiver() {
         Log.d(AppConfig.TAG_KMRE_PROXY, " onReceive action:" + action)
         if (action.equals(ACTION_OPEN_KMRE_PROXY)) {
             val bundle = intent?.getBundleExtra(AppConfig.KMRE_EXTRA_BUNDLE)
-            mHost = bundle?.getString(AppConfig.KMRE_HOST, "192.168.1.101")
-            mPort = bundle?.getInt(AppConfig.KMRE_PORT, 1080)
+            val host = bundle?.getString(AppConfig.KMRE_HOST, "192.168.1.101")
+            val port = bundle?.getInt(AppConfig.KMRE_PORT, 1080)
+
             val proxy_type = bundle?.getString(AppConfig.KMRE_PROXY_TYPE, "socks")
             V2RayServiceManager.setKmreProxyisOpen(true)
-            startKmreProxy(mHost, mPort, proxy_type, context)
+            startKmreProxy(host, port, proxy_type, context)
+            val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+            defaultSharedPreferences.edit().putString(AppConfig.KMRE_HOST, host).apply()
+            if (port != null) {
+                defaultSharedPreferences.edit().putInt(AppConfig.KMRE_PORT, port).apply()
+            }
         } else if (action.equals(ACTION_CLOSE_KMRE_PROXY)) {
             V2RayServiceManager.setKmreProxyisOpen(false)
             V2RayServiceManager.stopV2rayPoint()
@@ -51,7 +54,6 @@ class KmreProxyReceiver : BroadcastReceiver() {
             val bundle = intent?.getBundleExtra(AppConfig.KMRE_EXTRA_BUNDLE)
             val enable = bundle?.getBoolean(AppConfig.KMRE_PER_APP_PROXY_ENABLE, false)
             Log.d(AppConfig.TAG_KMRE_PROXY, "ACTION_PER_APP_PROXY_SET enable:" + enable)
-//            val defaultSharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
             if (enable == true) {
                 val app_list = bundle?.getString(AppConfig.KMRE_PER_APP_PROXY, "")
                 val black_list: Set<String>? = Gson().fromJson(app_list, Set::class.java) as Set<String>?
@@ -69,7 +71,11 @@ class KmreProxyReceiver : BroadcastReceiver() {
             if (V2RayServiceManager.isOpenForKmreProxy()) {
                 Log.d(AppConfig.TAG_KMRE_PROXY, "restart kmre proxy")
                 V2RayServiceManager.stopV2rayPoint()
-                startKmreProxy(mHost, mPort, "socks", context)
+                val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+                val host = defaultSharedPreferences.getString(AppConfig.KMRE_HOST, "192.168.1.101")
+                val port = defaultSharedPreferences.getInt(AppConfig.KMRE_PORT, 1080)
+                Log.d(AppConfig.TAG_KMRE_PROXY, "ACTION_PER_APP_PROXY_SET host:" + host + ",port:" + port)
+                startKmreProxy(host, port, "socks", context)
             }
         }
     }
